@@ -61,7 +61,12 @@
   gap: 16px;
 }
 
-.ctas button {
+.ctas input {
+  margin-bottom: 10px;
+}
+
+.ctas button,
+.ctas input {
   appearance: none;
   border-radius: 128px;
   height: 48px;

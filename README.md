@@ -2,7 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, set up the environment variables:
+
+```
+AHGORA_URL=https://www.ahgora.com.br/batidaonline/verifyIdentification
+AHGORA_ACCOUNT=[sua matrícula]
+AHGORA_MACHINECODE=[machine code da extensão do chrome]
+AHGORA_LATITUDE=[sua latitude]
+AHGORA_LONGITUDE=[sua longitude]
+AHGORA_VERSION=1.1.2
+AHGORA_PASSWORD=[sua senha]
+APP_KEY=[uma senha qualquer]
+```
+
+Second, run the development server:
 
 ```bash
 npm run dev

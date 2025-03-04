@@ -1,6 +1,13 @@
 "use server";
 
 export async function add(formData) {
+  if (formData.key !== process.env.APP_KEY) {
+    return {
+      ok: false,
+      message: "Invalid key",
+    };
+  }
+
   const timestamp = new Date().valueOf();
   const accuracy =
     Math.floor(Math.random() * 5010000000000 + 5000000000000) / 10000000000;

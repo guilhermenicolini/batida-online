@@ -52,6 +52,7 @@ export default function Home() {
         </ol>
         <div className={styles.ctas}>
           <form action={handleSubmit} noValidate>
+            <input type="password" name="key" />
             <button className={styles.primary}>
               <Image
                 className={styles.logo}
