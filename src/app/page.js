@@ -2,53 +2,65 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { add } from "./action";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Home() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const [data, setData] = useState({
     message: "",
     items: [],
   });
 
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem("items") ?? "[]");
+    setData({ ...data, items });
+  }, []);
+
   const submit = async (formData) => {
     setData({ ...data, message: "" });
     const result = await add(formData);
 
-    setData({ ...data, message: result.message });
-
     if (result.ok) {
       const now = new Date();
+      let items = data.items;
+      items.push({
+        key: now.valueOf(),
+        value: `${now.getDate().toString().padStart(2, "0")}/${(
+          now.getMonth() + 1
+        )
+          .toString()
+          .padStart(2, "0")}/${now.getFullYear()} ${now
+          .getHours()
+          .toString()
+          .padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`,
+      });
+
+      items = items.reverse().slice(0, 6);
+
       setData({
         ...data,
-        items: [
-          ...data.items,
-          {
-            key: now.valueOf(),
-            value: `${now.getDate().toString().padStart(2, "0")}/${(
-              now.getMonth() + 1
-            )
-              .toString()
-              .padStart(2, "0")}/${now.getFullYear()} ${now
-              .getHours()
-              .toString()
-              .padStart(2, "0")}:${now
-              .getMinutes()
-              .toString()
-              .padStart(2, "0")}`,
-          },
-        ],
+        message: result.message,
+        items,
       });
+      localStorage.setItem("items", JSON.stringify(items));
+    } else {
+      setData({ ...data, message: result.message });
     }
+    reset();
+  };
+
+  const clear = async () => {
+    setData({ ...data, items: [] });
+    localStorage.setItem("items", JSON.stringify([]));
   };
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         Últimas batidas
-        <ol>
+        <ol reversed>
           {data.items.map((item) => (
             <li key={item.key}>{item.value}</li>
           ))}
@@ -65,6 +77,13 @@ export default function Home() {
                 height={20}
               />
               Bater Ponto
+            </button>
+            <button
+              className={styles.secondary}
+              type="button"
+              onClick={() => clear()}
+            >
+              Limpar Pontos
             </button>
             <p aria-live="polite">{data?.message}</p>
           </form>

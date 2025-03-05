@@ -63,6 +63,11 @@
 
 .ctas input {
   margin-bottom: 10px;
+  background-color: var(--gray-alpha-200);
+}
+
+.ctas button {
+  margin-bottom: 10px;
 }
 
 .ctas button,
