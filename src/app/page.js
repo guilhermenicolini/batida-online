@@ -3,14 +3,17 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { add } from "./action";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function Home() {
+  const { register, handleSubmit } = useForm();
+
   const [data, setData] = useState({
     message: "",
     items: [],
   });
 
-  const handleSubmit = async (formData) => {
+  const submit = async (formData) => {
     setData({ ...data, message: "" });
     const result = await add(formData);
 
@@ -51,8 +54,8 @@ export default function Home() {
           ))}
         </ol>
         <div className={styles.ctas}>
-          <form action={handleSubmit} noValidate>
-            <input type="password" name="key" />
+          <form action={handleSubmit(submit)} noValidate>
+            <input type="password" {...register("key")} />
             <button className={styles.primary}>
               <Image
                 className={styles.logo}
